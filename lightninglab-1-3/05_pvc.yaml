@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-alpha-pvc
+  namespace: alpha
+spec:
+  accessModes:
+  - ReadWriteOnce # match with salpha-pv's spec.accessModes
+  resources:
+    requests:
+      storage: 1Gi # match with alpha-pv's .spec.capacity.storage
+  storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
+  

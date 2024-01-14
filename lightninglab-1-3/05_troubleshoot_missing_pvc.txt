@@ -1,0 +1,4 @@
+# investigate the situation
+k describe po alpha-mysql-5b7b8988c4-2mvpk -n alpha
+k get po alpha-mysql-5b7b8988c4-2mvpk -n alpha -o yaml
+k get deployment -n alpha alpha-mysql  -o yaml

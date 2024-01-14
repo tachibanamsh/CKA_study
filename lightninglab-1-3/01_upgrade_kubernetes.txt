@@ -1,0 +1,33 @@
+# on controlplane node
+kubectl drain controlplane --ignore-daemonsets
+apt update
+apt-get install kubeadm=1.27.0-00
+kubeadm upgrade apply v1.27.0 -y
+apt-get install kubelet=1.27.0-00
+
+# taint check
+kubectl describe node controlplane | grep -A3 -i taint
+# if node has taint, we have to remove.
+kubectl taint node controlplane key=value:NoSchedule-
+
+systemctl daemon-reload
+systemctl restart kubelet
+
+kubectl uncordon controlplane
+
+kubectl drain node01 --ignore-daemonsets
+ssh node01
+#on node01
+apt update
+apt-get install -y kubeadm=1.27.0-00 -y --allow-change-held-packages
+kubeadm upgrade node
+apt-get install kubelet=1.27.0-00
+systemctl daemon-reload
+systemctl restart kubelet
+exit
+
+# on controlplane
+kubectl uncordon node01
+
+# check the node pod running
+kubectl get po -o wide -A | grep -i podname

@@ -1,0 +1,12 @@
+k get po -A -o wide | grep -i etcd
+cat /etc/kubernetes/manifests/etcd.yaml
+# check the following row
+--trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt
+--cert-file=/etc/kubernetes/pki/etcd/server.crt
+--key-file=/etc/kubernetes/pki/etcd/server.key
+
+ETCDCTL_API='3' etcdctl snapshot save \
+  --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+  --cert=/etc/kubernetes/pki/etcd/server.crt \
+  --key=/etc/kubernetes/pki/etcd/server.key \
+  /opt/etcd-backup.db

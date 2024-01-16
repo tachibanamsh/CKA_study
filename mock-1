@@ -1,0 +1,60 @@
+1.
+k run nginx-pod --image=nginx:alpine
+
+2.
+k run messaging --image=redis:alpine -l tier=msg
+
+3.
+k create ns apx-x9984574
+
+4.
+k get node -o json >/opt/outputs/nodes-z3444kd9.json
+
+5.
+k expose pod messaging --name=messaging-service --port=6379
+
+6.
+k create deploy hr-web-app --image=kodekloud/webapp-color --replicas=2
+
+7.
+k run static-busybox --image=busybox --dry-run=client -o yaml >/tmp/static-busybox.yaml
+add following line into above file "command: ["sleep", "1000"]"
+cp /tmp/static-busybox.yaml /etc/kubernetes/manifests/
+
+8.
+k run temp-bus -n finance --image=redis:alpine
+
+9.
+k logs orange > indicate init-service was failed.
+k get po orange -o yaml > orange.yaml
+vi orange.yaml
+k delete po orange --force
+k apply -f orange.yaml
+
+10.
+k expose deploy/hr-web-app --name=hr-web-app-service --port=30082 --dry-run=client -o yaml >hr-web-app-service.yaml
+add following contents into the file spec. section
+  ports:
+
+port: 8080 protocol: TCP targetPort: 8080 nodePoer: 30082 k apply -f hr-web-app-service.yaml
+11.
+k get node -o jsonpath='{.items[].status.nodeInfo.osImage}'>/opt/outputs/nodes_os_x43kj56.txt
+
+12.
+vi pvc.yaml
+add following contents.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-analytics
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+
+- ReadWriteMany
+  hostPath:
+    path: /pv/data-analytics
+k apply -f pvc.yaml
+
+
